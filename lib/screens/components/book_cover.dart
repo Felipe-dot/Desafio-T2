@@ -14,6 +14,16 @@ class BookCover extends StatefulWidget {
 
 class _BookCoverState extends State<BookCover> {
   @override
+  void showSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '${text}',
+        ),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
@@ -39,8 +49,10 @@ class _BookCoverState extends State<BookCover> {
                     widget.book.isFavorite = !widget.book.isFavorite;
                     if (widget.book.isFavorite == true) {
                       context.read<FavoriteBookList>().push(widget.book);
+                      showSnackBar("O livro foi adicionada a lista");
                     } else {
                       context.read<FavoriteBookList>().remove(widget.book);
+                      showSnackBar("O livro foi removido da lista");
                     }
                   });
                 },
@@ -60,6 +72,10 @@ class _BookCoverState extends State<BookCover> {
           ],
         ),
         Text(widget.book.title),
+        Divider(
+          endIndent: 20,
+          indent: 20,
+        ),
         Text(widget.book.author),
       ],
     );
