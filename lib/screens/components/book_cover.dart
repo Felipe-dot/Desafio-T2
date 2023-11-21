@@ -1,5 +1,7 @@
 import 'package:desafio_2/models/book_model.dart';
+import 'package:desafio_2/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookCover extends StatefulWidget {
   final BookModel book;
@@ -35,6 +37,11 @@ class _BookCoverState extends State<BookCover> {
                 onTap: () {
                   setState(() {
                     widget.book.isFavorite = !widget.book.isFavorite;
+                    if (widget.book.isFavorite == true) {
+                      context.read<FavoriteBookList>().push(widget.book);
+                    } else {
+                      context.read<FavoriteBookList>().remove(widget.book);
+                    }
                   });
                 },
                 child: Container(
