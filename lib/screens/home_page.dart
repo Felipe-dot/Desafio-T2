@@ -1,6 +1,7 @@
-import 'package:desafio_2/data/remote/remote_api.dart';
 import 'package:desafio_2/models/book_model.dart';
+import 'package:desafio_2/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'components/book_cover.dart';
 
@@ -12,29 +13,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool showFavoritesBooks = false;
+  List<BookModel> listOfFavoriteBooks = [];
   List<BookModel> listOfBooks = [];
-
-  Future<void> getListOfBooks() async {
-    RemoteApi api = RemoteApi();
-
-    List<dynamic> response = await api.fetchData();
-    for (var element in response) {
-      listOfBooks.add(
-        BookModel(
-          id: element['id'],
-          title: element['title'],
-          author: element['author'],
-          coverUrl: element['cover_url'],
-          downloadUrl: element['download_url'],
-          isFavorite: false,
-        ),
-      );
-    }
-  }
 
   @override
   void initState() {
-    getListOfBooks();
+    listOfFavoriteBooks = context.read<FavoriteBookList>().favoriteBookList;
+    listOfBooks = context.read<BookList>().bookList;
     super.initState();
   }
 
@@ -46,14 +32,22 @@ class _HomePageState extends State<HomePage> {
           leading: Row(
             children: [
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    showFavoritesBooks = false;
+                  });
+                },
                 child: Text("Livros"),
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(),
                 ),
               ),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    showFavoritesBooks = !showFavoritesBooks;
+                  });
+                },
                 child: Text("Favoritos"),
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(),
@@ -63,17 +57,23 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: GridView.builder(
-          itemCount: listOfBooks.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          itemCount: showFavoritesBooks
+              ? listOfFavoriteBooks.length
+              : listOfBooks.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisSpacing: 20,
             mainAxisSpacing: 20,
             crossAxisCount: 3,
             mainAxisExtent: 200,
           ),
           itemBuilder: (ctx, idx) {
-            return BookCover(
-              book: listOfBooks[idx],
-            );
+            return showFavoritesBooks
+                ? BookCover(
+                    book: listOfFavoriteBooks[idx],
+                  )
+                : BookCover(
+                    book: listOfBooks[idx],
+                  );
           },
         ));
   }
