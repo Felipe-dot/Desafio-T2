@@ -13,7 +13,6 @@ class BookCover extends StatefulWidget {
 }
 
 class _BookCoverState extends State<BookCover> {
-  @override
   void showSnackBar(String text) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -24,6 +23,7 @@ class _BookCoverState extends State<BookCover> {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,

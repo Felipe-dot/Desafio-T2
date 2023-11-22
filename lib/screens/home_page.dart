@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
               OutlinedButton(
                 onPressed: () {
                   setState(() {
-                    showFavoritesBooks = !showFavoritesBooks;
+                    showFavoritesBooks = true;
                   });
                 },
                 child: Text("Favoritos"),
