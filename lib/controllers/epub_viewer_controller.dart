@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:vocsy_epub_viewer/epub_viewer.dart';
 
 const platform = MethodChannel('my_channel');
 
@@ -54,4 +56,30 @@ download(Function startDownload) async {
   } else {
     PlatformException(code: '500');
   }
+}
+
+openBook(dynamic context, String filePath, bookId) {
+  VocsyEpub.setConfig(
+    themeColor: Theme.of(context).primaryColor,
+    identifier: "iosBook",
+    scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
+    allowSharing: true,
+    enableTts: true,
+    nightMode: true,
+  );
+
+  // get current locator
+  VocsyEpub.locatorStream.listen((locator) {
+    print('LOCATOR: $locator');
+  });
+
+  VocsyEpub.open(
+    filePath,
+    lastLocation: EpubLocator.fromJson({
+      "bookId": "${bookId}",
+      "href": "/OEBPS/ch06.xhtml",
+      "created": 1539934158390,
+      "locations": {"cfi": "epubcfi(/0!/4/4[simple_book]/2/2/6)"}
+    }),
+  );
 }
