@@ -86,12 +86,16 @@ class _BookCoverState extends State<BookCover> {
             ),
           ],
         ),
-        Text(widget.book.title),
+        Text(
+          widget.book.title,
+        ),
         const Divider(
           endIndent: 20,
           indent: 20,
         ),
-        Text(widget.book.author),
+        Text(
+          widget.book.author,
+        ),
       ],
     );
   }

@@ -56,25 +56,28 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: GridView.builder(
-          itemCount: showFavoritesBooks
-              ? listOfFavoriteBooks.length
-              : listOfBooks.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-            crossAxisCount: 3,
-            mainAxisExtent: 200,
+        body: Container(
+          margin: const EdgeInsets.only(left: 20),
+          child: GridView.builder(
+            itemCount: showFavoritesBooks
+                ? listOfFavoriteBooks.length
+                : listOfBooks.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisSpacing: 20,
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              mainAxisExtent: 200,
+            ),
+            itemBuilder: (ctx, idx) {
+              return showFavoritesBooks
+                  ? BookCover(
+                      book: listOfFavoriteBooks[idx],
+                    )
+                  : BookCover(
+                      book: listOfBooks[idx],
+                    );
+            },
           ),
-          itemBuilder: (ctx, idx) {
-            return showFavoritesBooks
-                ? BookCover(
-                    book: listOfFavoriteBooks[idx],
-                  )
-                : BookCover(
-                    book: listOfBooks[idx],
-                  );
-          },
         ));
   }
 }
