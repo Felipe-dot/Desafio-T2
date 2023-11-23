@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool showFavoritesBooks = false;
   List<BookModel> listOfBooks = [];
+  bool hasOneFavorite = false;
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     if (showFavoritesBooks) {
       listOfBooks = listOfBooks.where((obj) => obj.isFavorite).toList();
+      hasOneFavorite = listOfBooks.any((e) => !e.isFavorite);
     } else {
       listOfBooks = context.read<BookList>().bookList;
     }
@@ -59,22 +61,26 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: Container(
-          margin: const EdgeInsets.only(left: 20),
-          child: GridView.builder(
-            itemCount: listOfBooks.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 20,
-              crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              mainAxisExtent: 200,
-            ),
-            itemBuilder: (ctx, idx) {
-              return BookCover(
-                book: listOfBooks[idx],
-              );
-            },
-          ),
-        ));
+        body: showFavoritesBooks && hasOneFavorite
+            ? Center(
+                child: Text("Nenhum livro adicionado aos favoritos,"),
+              )
+            : Container(
+                margin: const EdgeInsets.only(left: 20),
+                child: GridView.builder(
+                  itemCount: listOfBooks.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 20,
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 10,
+                    mainAxisExtent: 200,
+                  ),
+                  itemBuilder: (ctx, idx) {
+                    return BookCover(
+                      book: listOfBooks[idx],
+                    );
+                  },
+                ),
+              ));
   }
 }
