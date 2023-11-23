@@ -34,7 +34,6 @@ Future<void> fetchAndroidVersion(Function startDownload) async {
 
 Future<String?> getAndroidVersion() async {
   try {
-    print("TESTANDO");
     final String version = await platform.invokeMethod('getAndroidVersion');
     return version;
   } on PlatformException catch (e) {
