@@ -120,6 +120,7 @@ class _BookCoverState extends State<BookCover> {
     setState(() {
       loading = true;
     });
+    showLoadingDialog(context);
     Directory? appDocDir = Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
@@ -141,6 +142,7 @@ class _BookCoverState extends State<BookCover> {
         },
       ).whenComplete(() {
         setState(() {
+          Navigator.of(context).pop();
           loading = false;
           filePath = path;
         });
