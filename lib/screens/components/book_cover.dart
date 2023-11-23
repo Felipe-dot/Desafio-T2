@@ -1,12 +1,11 @@
 import 'dart:io';
 
+import 'package:desafio_2/data/local/settings/book.dart';
 import 'package:desafio_2/models/book_model.dart';
-import 'package:desafio_2/providers/providers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:vocsy_epub_viewer/epub_viewer.dart';
 import 'package:flutter/services.dart';
 
 import '../../controllers/epub_viewer_controller.dart';
@@ -26,6 +25,13 @@ class _BookCoverState extends State<BookCover> {
   bool loading = false;
   Dio dio = Dio();
   String filePath = "";
+  late Box<Book> favoriteBookListBox;
+
+  @override
+  void initState() {
+    super.initState();
+    favoriteBookListBox = Hive.box('favoriteBookListBox');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +69,20 @@ class _BookCoverState extends State<BookCover> {
                   setState(() {
                     widget.book.isFavorite = !widget.book.isFavorite;
                     if (widget.book.isFavorite == true) {
-                      context.read<FavoriteBookList>().push(widget.book);
+                      favoriteBookListBox.put(
+                        widget.book.id,
+                        Book(
+                          id: widget.book.id,
+                          title: widget.book.title,
+                          author: widget.book.author,
+                          coverUrl: widget.book.coverUrl,
+                          downloadUrl: widget.book.downloadUrl,
+                          isFavorite: widget.book.isFavorite,
+                        ),
+                      );
                       showSnackBar("O livro foi adicionada a lista", context);
                     } else {
-                      context.read<FavoriteBookList>().remove(widget.book);
+                      favoriteBookListBox.delete(widget.book.id);
                       showSnackBar("O livro foi removido da lista", context);
                     }
                   });

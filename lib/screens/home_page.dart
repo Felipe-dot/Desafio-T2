@@ -14,18 +14,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool showFavoritesBooks = false;
-  List<BookModel> listOfFavoriteBooks = [];
   List<BookModel> listOfBooks = [];
 
   @override
   void initState() {
-    listOfFavoriteBooks = context.read<FavoriteBookList>().favoriteBookList;
-    listOfBooks = context.read<BookList>().bookList;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (showFavoritesBooks) {
+      listOfBooks = listOfBooks.where((obj) => obj.isFavorite).toList();
+    } else {
+      listOfBooks = context.read<BookList>().bookList;
+    }
+
     return Scaffold(
         appBar: AppBar(
           leadingWidth: 600,
@@ -59,9 +62,7 @@ class _HomePageState extends State<HomePage> {
         body: Container(
           margin: const EdgeInsets.only(left: 20),
           child: GridView.builder(
-            itemCount: showFavoritesBooks
-                ? listOfFavoriteBooks.length
-                : listOfBooks.length,
+            itemCount: listOfBooks.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisSpacing: 20,
               crossAxisCount: 3,
@@ -69,13 +70,9 @@ class _HomePageState extends State<HomePage> {
               mainAxisExtent: 200,
             ),
             itemBuilder: (ctx, idx) {
-              return showFavoritesBooks
-                  ? BookCover(
-                      book: listOfFavoriteBooks[idx],
-                    )
-                  : BookCover(
-                      book: listOfBooks[idx],
-                    );
+              return BookCover(
+                book: listOfBooks[idx],
+              );
             },
           ),
         ));
