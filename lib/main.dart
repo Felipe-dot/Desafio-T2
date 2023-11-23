@@ -1,13 +1,18 @@
-import 'package:desafio_2/providers/book_list_provider.dart';
-import 'package:desafio_2/providers/favorite_book_list_provider.dart';
+import 'package:desafio_2/providers/providers.dart';
 import 'package:desafio_2/screens/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'data/local/settings/book.dart';
+
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(BookAdapter());
+  await Hive.openBox<Book>('favoriteBookListBox');
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => BookList()),
-    ChangeNotifierProvider(create: (_) => FavoriteBookList()),
   ], child: const MyApp()));
 }
 
