@@ -25,7 +25,7 @@ Para instalar o aplicativo, você pode seguir de duas maneiras
 
 ### Segunda forma
 
-Navegue ate essa [pasta](build/app/outputs/flutter-apk/). Envie para seu celular o arquivo app-release.apk, e instale ele. 
+Navegue ate essa [pasta](release). Envie para seu celular o arquivo app-release.apk, e instale ele. 
 
 Lembrando que para realizar a instalação é necessário permitir a instalação de aplicativos de fontes desconhecidas, você pode ver mais sobre [nesse link](https://tecnoblog.net/responde/fontes-desconhecidas-android-oreo/)
 
