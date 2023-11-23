@@ -29,3 +29,5 @@ Navegue ate essa [pasta](build/app/outputs/flutter-apk/). Envie para seu celular
 
 Lembrando que para realizar a instalação é necessário permitir a instalação de aplicativos de fontes desconhecidas, você pode ver mais sobre [nesse link](https://tecnoblog.net/responde/fontes-desconhecidas-android-oreo/)
 
+Em celulares mais novos, é necessário desabilitar o Google play protect, para que ocorra a instalação do aplicativo. Para detalhes de como desativar, acesse esse [link](https://support.google.com/googleplay/answer/2812853?hl=pt)
+
